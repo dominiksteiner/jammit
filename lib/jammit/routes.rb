@@ -7,8 +7,8 @@ module Jammit
     # by the absolute minimum. In your config/routes.rb file, call:
     #   Jammit::Routes.draw(map)
     # Passing in the routing "map" object.
-    def self.draw()
-      match "/#{Jammit.package_path}/:package.:extension", {
+    def self.draw(routes)
+      routes.match "/#{Jammit.package_path}/:package.:extension", {
         :controller => 'jammit',
         :action => 'package',
         :requirements => {
