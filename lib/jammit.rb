@@ -231,7 +231,7 @@ module Jammit
     java = @compressor_options[:java] || 'java'
     @css_compressor_options[:java] ||= java if @compressor_options[:java]
     version = (`#{java} -version 2>&1`)[/\d+\.\d+/]
-    puts "------------ check_java_version : #{@javascript_compressor} : #{version}"
+    warn("check_java_version : #{@javascript_compressor} : #{version}")
     disable_compression if !version ||
       (@javascript_compressor == :closure && version < '1.6') ||
       (@javascript_compressor == :yui && version < '1.4')
