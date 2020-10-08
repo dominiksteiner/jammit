@@ -68,7 +68,7 @@ module Jammit
 
   @javascript_compressors = JAVASCRIPT_COMPRESSORS
   @css_compressors        = CSS_COMPRESSORS
-  
+
   def self.merge_configs(paths, soft=false)
     merged_conf = {}
     paths.each do |path|
@@ -82,9 +82,9 @@ module Jammit
       stylesheets = stylesheets.merge(conf["stylesheets"]) if conf["stylesheets"]
       asset_roots = (merged_conf["asset_roots"] || [])
       asset_roots.push(conf["asset_roots"]) if conf["asset_roots"]
-      deep_merged_attributes = { 
-        "javascripts" => javascripts, 
-        "stylesheets" => stylesheets, 
+      deep_merged_attributes = {
+        "javascripts" => javascripts,
+        "stylesheets" => stylesheets,
         "asset_roots" => asset_roots
       }
       merged_conf = (merged_conf.merge(conf)).merge(deep_merged_attributes)
@@ -99,7 +99,7 @@ module Jammit
     config_paths = [config].flatten
     conf = merge_configs(config_paths, soft)
     return false if soft and not conf
-    
+
     # Optionally overwrite configuration based on the environment.
     rails_env = (defined?(Rails) ? ::Rails.env : ENV['RAILS_ENV'] || "development")
     conf.merge! conf.delete rails_env if conf.has_key? rails_env
@@ -183,7 +183,7 @@ module Jammit
   def self.set_public_root(public_root=nil)
     @public_root = public_root if public_root
   end
-  
+
   def self.set_asset_roots(*roots)
     @asset_roots = ([ASSET_ROOT, roots].flatten.compact.uniq || [])
   end
@@ -231,6 +231,7 @@ module Jammit
     java = @compressor_options[:java] || 'java'
     @css_compressor_options[:java] ||= java if @compressor_options[:java]
     version = (`#{java} -version 2>&1`)[/\d+\.\d+/]
+    puts "------------ check_java_version : #{@javascript_compressor} : #{version}"
     disable_compression if !version ||
       (@javascript_compressor == :closure && version < '1.6') ||
       (@javascript_compressor == :yui && version < '1.4')
